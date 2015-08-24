@@ -24,13 +24,13 @@ ALLEGRO_BITMAP *mi_sprite2;
 ALLEGRO_BITMAP *mi_sprite3;
 ALLEGRO_BITMAP *mi_sprite4;
 
-int key[4] = {false, false, false, false };
-int key2[4] = {true, true, true, true};
+int key[] = {false, false, false, false };
+int key2[] = {0, 0, 0, 0};
 int playerX = 0;
 int playerY = 0;
 
-int player2X = 50;
-int player2Y = 50;
+int player2X = 150;
+int player2Y = 150;
 
 int main(int argc, char *argv[]) {
     {
@@ -110,35 +110,35 @@ int main(int argc, char *argv[]) {
 		    key[KEY_DOWN] = false;
 	    }
 
-	    if (event.type == ALLEGRO_EVENT_KEY_DOWN)
-	    {
-
-		if (event.keyboard.keycode == ALLEGRO_KEY_A)
-		    key2[KEY_A] = true;
-
-		if (event.keyboard.keycode == ALLEGRO_KEY_D)
-		    key2[KEY_D] = true;
-
-		if (event.keyboard.keycode == ALLEGRO_KEY_W)
-		    key2[KEY_W] = true;
-
-		if (event.keyboard.keycode == ALLEGRO_KEY_S)
-		    key2[KEY_S] = true;
-	    } 		    
-
 	    if (event.type == ALLEGRO_EVENT_KEY_UP)
 	    {
+
 		if (event.keyboard.keycode == ALLEGRO_KEY_A)
-		    key2[KEY_A] = false;
+		    key[KEY_A] = 0;
 
 		if (event.keyboard.keycode == ALLEGRO_KEY_D)
-		    key2[KEY_D] = false;
+		    key[KEY_D] = 0;
 
 		if (event.keyboard.keycode == ALLEGRO_KEY_W)
-		    key2[KEY_W] = false;
+		    key[KEY_W] = 0;
 
 		if (event.keyboard.keycode == ALLEGRO_KEY_S)
-		    key2[KEY_S] = false;
+		    key[KEY_S] = 0;
+	    } 		    
+
+	    if (event.type == ALLEGRO_EVENT_KEY_DOWN)
+	    {
+		if (event.keyboard.keycode == ALLEGRO_KEY_A)
+		    key[KEY_A] = 1;
+
+		if (event.keyboard.keycode == ALLEGRO_KEY_D)
+		    key[KEY_D] = 1;
+
+		if (event.keyboard.keycode == ALLEGRO_KEY_W)
+		    key[KEY_W] = 1;
+
+		if (event.keyboard.keycode == ALLEGRO_KEY_S)
+		    key[KEY_S] = 1;
 	    } 
 	    if (event.type == ALLEGRO_EVENT_TIMER)
 	    {
@@ -151,13 +151,13 @@ int main(int argc, char *argv[]) {
 		if (key[KEY_DOWN])
 		    playerY += 4;
 
-		if (key [KEY_A])
+		if (key[KEY_A])
 		    player2X -= 4;
-		if (key [KEY_D])
+		if (key[KEY_D])
 		    player2X += 4;
-		if (key [KEY_W])
+		if (key[KEY_W])
 		    player2Y -= 4;
-		if (key [KEY_S])
+		if (key[KEY_S])
 		    player2Y += 4;
 
 		redraw = 1;
@@ -167,9 +167,9 @@ int main(int argc, char *argv[]) {
 	    {
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_draw_bitmap(mi_sprite4, 0, 0, 0);
-		al_draw_bitmap(mi_sprite3, 450, 200, 0);
+		al_draw_bitmap(mi_sprite3, rand() % 200, rand() % 200, 0);
+		 al_draw_bitmap(mi_sprite2, player2X, player2Y, 0);
 		al_draw_bitmap(mi_sprite, playerX, playerY, 0);
-		al_draw_bitmap(mi_sprite2, player2X, player2Y, 0);
 
 		al_flip_display();
 
