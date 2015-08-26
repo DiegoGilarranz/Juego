@@ -6,6 +6,7 @@
 
 enum GAME_KEYS
 {
+    KEY_ENTER,
     KEY_LEFT,
     KEY_RIGHT,
     KEY_UP,
@@ -23,30 +24,48 @@ ALLEGRO_BITMAP *mi_sprite;
 ALLEGRO_BITMAP *mi_sprite2;
 ALLEGRO_BITMAP *mi_sprite3;
 ALLEGRO_BITMAP *mi_sprite4;
+ALLEGRO_BITMAP *mi_sprite5;
 
-int key[] = {false, false, false, false };
+int key[] = {false, false, false, false, false };
 int key2[] = {0, 0, 0, 0};
-int playerX = 0;
-int playerY = 0;
+
+int playerX = 1000;
+int playerY = 150;
 
 int player2X = 150;
 int player2Y = 150;
 
+int ventanaX = 430;
+int ventanaY = 100;
+
+int queso = rand() % 500 + 10;
+int queso2 = rand() % 10 + 250;
+int collision = false; 
+
 int main(int argc, char *argv[]) {
     {
+
+	system("figlet ratonciitos");
+
 	int redraw = 1;
 
+
 	al_init(); /* inicia el allegro */
+
 	al_init_image_addon();
 
 	al_install_keyboard ();
+
 
 	display = al_create_display(1640, 1480);; /*crea la ventana */
 
 	event_queue = al_create_event_queue(); /*reservamos memoria para la variable */
 	timer = al_create_timer(1.0 / 60);
 
+	
+
 	mi_sprite4 = al_load_bitmap("forest.png");
+	 mi_sprite5 = al_load_bitmap("ratones.png");
 
 
 	mi_sprite = al_load_bitmap("ratoncito.png");
@@ -57,6 +76,7 @@ int main(int argc, char *argv[]) {
 
 	mi_sprite3 = al_load_bitmap("queso.png");
 	al_convert_mask_to_alpha(mi_sprite3, al_map_rgb(255, 255, 255));
+
 
 
 
@@ -71,6 +91,7 @@ int main(int argc, char *argv[]) {
 	al_clear_to_color(al_map_rgb(0, 0, 0));  /* ponemos la ventana del color que queramos */
 
 	al_flip_display(); /* actualiza la pantalla continuamente */
+
 
 	while (1)
 	{
@@ -92,7 +113,10 @@ int main(int argc, char *argv[]) {
 		    key[KEY_UP] = true;
 
 		if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
-		    key[KEY_DOWN] = true; 
+		    key[KEY_DOWN] = true;
+
+			if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
+			    key[KEY_ENTER] = true;
 	    }
 
 	    if (event.type == ALLEGRO_EVENT_KEY_UP)
@@ -108,6 +132,10 @@ int main(int argc, char *argv[]) {
 
 		if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
 		    key[KEY_DOWN] = false;
+
+		 if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
+		     key[KEY_ENTER] = false;
+
 	    }
 
 	    if (event.type == ALLEGRO_EVENT_KEY_UP)
@@ -159,6 +187,10 @@ int main(int argc, char *argv[]) {
 		    player2Y -= 4;
 		if (key[KEY_S])
 		    player2Y += 4;
+	
+		if (key[KEY_ENTER])
+		    ventanaX -=500;
+
 
 		redraw = 1;
 	    }
@@ -167,16 +199,18 @@ int main(int argc, char *argv[]) {
 	    {
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_draw_bitmap(mi_sprite4, 0, 0, 0);
-		al_draw_bitmap(mi_sprite3, rand() % 200, rand() % 200, 0);
-		 al_draw_bitmap(mi_sprite2, player2X, player2Y, 0);
+		al_draw_bitmap(mi_sprite5, ventanaX, ventanaY, 0);
+		al_draw_bitmap(mi_sprite3, queso, queso2, 0);
+		 al_draw_bitmap(mi_sprite2, player2X, player2Y, ALLEGRO_FLIP_HORIZONTAL);
 		al_draw_bitmap(mi_sprite, playerX, playerY, 0);
 
 		al_flip_display();
 
 		redraw = 0;
-	    }   
-
+	    }
 	}
+
+
 	al_destroy_display(display); /* libera la memoria guardada */ 
 	al_destroy_event_queue(event_queue); /* liberamos la memoria de los eventos */
 	al_destroy_timer(timer);
@@ -184,6 +218,7 @@ int main(int argc, char *argv[]) {
 	al_destroy_bitmap(mi_sprite2);
 	al_destroy_bitmap(mi_sprite3);
 	al_destroy_bitmap(mi_sprite4);
+
 
 	return 0;
 
