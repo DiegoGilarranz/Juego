@@ -25,6 +25,9 @@ ALLEGRO_BITMAP *mi_sprite2;
 ALLEGRO_BITMAP *mi_sprite3;
 ALLEGRO_BITMAP *mi_sprite4;
 ALLEGRO_BITMAP *mi_sprite5;
+ALLEGRO_BITMAP *mi_sprite6;
+ALLEGRO_BITMAP *mi_sprite7;
+ALLEGRO_BITMAP *mi_sprite8;
 
 int key[] = {false, false, false, false, false };
 int key2[] = {0, 0, 0, 0};
@@ -38,12 +41,25 @@ int player2Y = 150;
 int ventanaX = 430;
 int ventanaY = 100;
 
-int queso = rand() % 500 + 10;
-int queso2 = rand() % 10 + 250;
+int queso =  rand() % 10 + 50;
+int queso2 = rand() % 100;
+
+int trampa1X = 600;
+int trampa1Y = 500;
+
+int trampa2X = 800;
+int trampa2Y = 500;
+
+int trampa3X = 600;
+int trampa3Y = 600;
+
+
 int collision = false; 
 
 int main(int argc, char *argv[]) {
     {
+
+	system("clear");
 
 	system("figlet ratonciitos");
 
@@ -69,7 +85,7 @@ int main(int argc, char *argv[]) {
 
 
 	mi_sprite = al_load_bitmap("ratoncito.png");
-	al_convert_mask_to_alpha(mi_sprite, al_map_rgb(255, 255, 255));
+	// al_convert_mask_to_alpha(mi_sprite, al_map_rgb(255, 255, 255));
 
 	mi_sprite2 = al_load_bitmap("rantocito2.png");
 	al_convert_mask_to_alpha(mi_sprite2, al_map_rgb(255, 255, 255));
@@ -77,10 +93,19 @@ int main(int argc, char *argv[]) {
 	mi_sprite3 = al_load_bitmap("queso.png");
 	al_convert_mask_to_alpha(mi_sprite3, al_map_rgb(255, 255, 255));
 
+	 mi_sprite6 = al_load_bitmap("trampa.png");
+  	 al_convert_mask_to_alpha(mi_sprite6, al_map_rgb(255, 255, 255));
+
+
+	mi_sprite7 = al_load_bitmap("trampa2.png");
+	  al_convert_mask_to_alpha(mi_sprite7, al_map_rgb(255, 255, 255));
+
+	  mi_sprite8 = al_load_bitmap("trampa3.png");
+	   al_convert_mask_to_alpha(mi_sprite8, al_map_rgb(255, 255, 255));
 
 
 
-	al_register_event_source(event_queue, al_get_display_event_source(display)); /* aqui decimos donde queremos registrar los eventos */
+	 al_register_event_source(event_queue, al_get_display_event_source(display)); /* aqui decimos donde queremos registrar los eventos */
 
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
@@ -91,7 +116,6 @@ int main(int argc, char *argv[]) {
 	al_clear_to_color(al_map_rgb(0, 0, 0));  /* ponemos la ventana del color que queramos */
 
 	al_flip_display(); /* actualiza la pantalla continuamente */
-
 
 	while (1)
 	{
@@ -203,12 +227,28 @@ int main(int argc, char *argv[]) {
 		al_draw_bitmap(mi_sprite3, queso, queso2, 0);
 		 al_draw_bitmap(mi_sprite2, player2X, player2Y, ALLEGRO_FLIP_HORIZONTAL);
 		al_draw_bitmap(mi_sprite, playerX, playerY, 0);
+		al_draw_bitmap(mi_sprite6, trampa1X, trampa1Y, 0);
+		 al_draw_bitmap(mi_sprite7, trampa2X, trampa2Y, 0);
+		  al_draw_bitmap(mi_sprite8, trampa3X, trampa3Y, 0);
 
-		al_flip_display();
+		//al_flip_display();
+
+		 if( playerX == player2X && playerY == player2Y)
+		
+		 {
+		     al_destroy_bitmap(mi_sprite3);
+		 }
+
+		 
+		  al_flip_display();
+	
+
 
 		redraw = 0;
 	    }
+
 	}
+
 
 
 	al_destroy_display(display); /* libera la memoria guardada */ 
@@ -218,6 +258,11 @@ int main(int argc, char *argv[]) {
 	al_destroy_bitmap(mi_sprite2);
 	al_destroy_bitmap(mi_sprite3);
 	al_destroy_bitmap(mi_sprite4);
+	al_destroy_bitmap(mi_sprite5);
+	al_destroy_bitmap(mi_sprite6);
+	al_destroy_bitmap(mi_sprite7);
+	al_destroy_bitmap(mi_sprite8);
+
 
 
 	return 0;
